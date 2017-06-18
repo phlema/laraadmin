@@ -64,6 +64,7 @@ class MenuController extends Controller
         $url = Input::get('url');
         $icon = Input::get('icon');
         $type = Input::get('type');
+        $group = Input::get('group');
         
         if($type == "module") {
             $module_id = Input::get('module_id');
@@ -84,6 +85,7 @@ class MenuController extends Controller
             "url" => $url,
             "icon" => $icon,
             "type" => $type,
+            "group" =>$group,
             "parent" => 0
         ]);
         if($type == "module") {
@@ -108,11 +110,13 @@ class MenuController extends Controller
         $url = Input::get('url');
         $icon = Input::get('icon');
         $type = Input::get('type');
+        $group = Input::get('group');
         
         $menu = Menu::find($id);
         $menu->name = $name;
         $menu->url = $url;
         $menu->icon = $icon;
+        $menu->group = $group;
         $menu->save();
         
         return redirect(config('laraadmin.adminRoute') . '/la_menus');
