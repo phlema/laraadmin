@@ -291,7 +291,7 @@ class CodeGenerator
                         $required = "true";
                     }
                     $listing_col = "false";
-                    if($field['listing_col']) {
+                    if(isset($field['listing_col'])) {
                         $listing_col = "true";
                     }
                     $values = "";
