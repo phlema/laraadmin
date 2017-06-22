@@ -1419,6 +1419,92 @@ class Module extends Model
         }
         return false;
     }
+
+    /**
+     * Get Module Field Access for role and access type
+     *
+     * Module::hasFieldAccess($module_id, $field_id, $access_type, $user_id);
+     *
+     * @param $module_id Module ID / Name
+     * @param $field_id Field ID / Name
+     * @param string $access_type Access Type - view / write
+     * @param int $user_id User id for which Access will be checked
+     * @return bool Returns true if access is there or false
+     */
+    public static function getFieldAccessList($module_id, $access_type = "view", $user_id = 0)
+    {
+        $roles = array();
+
+        // \Log::debug("module_id: ".$module_id." field_id: ".$field_id." access_type: ".$access_type);
+
+        if(\Auth::guest()) {
+            return false;
+        }
+
+        if(is_string($module_id)) {
+            $module = Module::get($module_id);
+            $module_id = $module->id;
+        }
+
+        if($access_type == null || $access_type == "") {
+            $access_type = "view";
+        }
+
+        if($user_id) {
+            $user = \App\User::find($user_id);
+            if(isset($user->id)) {
+                $roles = $user->roles();
+            }
+        } else {
+            $roles = \Auth::user()->roles();
+        };
+
+        $hasModuleAccess = false;
+
+        foreach($roles->get() as $role) {
+            $module_perm = DB::table('role_module')->where('role_id', $role->id)->where('module_id', $module_id)->first();
+            if(isset($module_perm->id)) {
+                if($access_type == "view" && isset($module_perm->{"acc_" . $access_type}) && $module_perm->{"acc_" . $access_type} == 1) {
+                    $hasModuleAccess = true;
+                    break;
+                } else if($access_type == "write" && ((isset($module_perm->{"acc_create"}) && $module_perm->{"acc_create"} == 1) || (isset($module_perm->{"acc_edit"}) && $module_perm->{"acc_edit"} == 1))) {
+                    $hasModuleAccess = true;
+                    break;
+                } else {
+                    continue;
+                }
+            } else {
+                continue;
+            }
+        }
+        if($hasModuleAccess) {
+            $module_field_perm = DB::table('role_module_fields')
+                                ->select('colname','access')
+                                ->join('module_fields','role_module_fields.field_id', '=', 'module_fields.id')
+                                ->join('roles','role_module_fields.role_id', '=', 'roles.id')
+                                ->where('module_fields.module', $module_id)
+                                ->where('roles.id', $roles->id)
+                                ->whereIn('access', ['readonly', 'write'])
+                                ->get();
+            if($module_field_perm){
+                dd($module_field_perm);
+            }
+            if(isset($module_field_perm->access)) {
+                if($access_type == "view" && ($module_field_perm->{"access"} == "readonly" || $module_field_perm->{"access"} == "write")) {
+                    return true;
+                } else if($access_type == "write" && $module_field_perm->{"access"} == "write") {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+        return false;
+    }
     
     /**
      * Set Default Access for given Module and Role
