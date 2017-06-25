@@ -252,9 +252,13 @@ class LAFormMaker
                         $default_val = $defaultvalue;
                     }
                     // Override the edit value
-                    if(isset($row) && $row->$field_name) {
+                    if(isset($row) && isset($row->$field_name)) {
                         $default_val = $row->$field_name;
-                    } else if($default_val == NULL || $default_val == "" || $default_val == "NULL") {
+                    }
+                    elseif( isset($row[0]) && isset($row[0]->$field_name)){
+                        $default_val = $row[0]->$field_name;
+                    } 
+                    else if($default_val == NULL || $default_val == "" || $default_val == "NULL") {
                         // When Adding Record if we dont have default value let's not show NULL By Default
                         $default_val = "0";
                     }
