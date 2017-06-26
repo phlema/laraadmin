@@ -41,7 +41,10 @@ class LAFormMaker
     {
         // Check Field Write Aceess
         if(Module::hasFieldAccess($module->id, $module->fields[$field_name]['id'], $access_type = "write")) {
-            
+            $allow_edit = Module::hasAccess($module->id,'edit');
+            if(!$allow_edit){
+                $params['disable']  = 'disable';
+            }
             $row = null;
             if(isset($module->row)) {
                 $row = $module->row;
@@ -65,6 +68,8 @@ class LAFormMaker
             
             $out = '<div class="form-group">';
             $required_ast = "";
+
+            $params['id'] = $field_name;
             
             if(!isset($params['class'])) {
                 $params['class'] = $class;
@@ -246,18 +251,20 @@ class LAFormMaker
                     $params['data-placeholder'] = $params['placeholder'];
                     unset($params['placeholder']);
                     $params['rel'] = "select2";
+
                     
-                    //echo $defaultvalue;
+                   //dd($defaultvalue);
                     if($default_val == null) {
                         $default_val = $defaultvalue;
                     }
                     // Override the edit value
+                    //dd($row);
                     if(isset($row) && isset($row->$field_name)) {
                         $default_val = $row->$field_name;
                     }
-                    elseif( isset($row[0]) && isset($row[0]->$field_name)){
+                    else if(isset($row[0]) && isset($row[0]->$field_name)){
                         $default_val = $row[0]->$field_name;
-                    } 
+                    }
                     else if($default_val == NULL || $default_val == "" || $default_val == "NULL") {
                         // When Adding Record if we dont have default value let's not show NULL By Default
                         $default_val = "0";
@@ -276,7 +283,9 @@ class LAFormMaker
                     }
                     
                     if(!$required) {
-                        array_unshift($popup_vals, "None");
+                        $popup_vals2 = array('NONE');
+                        $popup_vals = $popup_vals2 + $popup_vals;
+                        //array_unshift($popup_vals, "None");
                     }
                     $out .= Form::select($field_name, $popup_vals, $default_val, $params);
                     
