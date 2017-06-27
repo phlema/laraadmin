@@ -311,7 +311,7 @@ class Module extends Model
                 if($field->defaultvalue == NULL || $field->defaultvalue == "" || $field->defaultvalue == "NULL") {
                     $var->default(NULL);
                 } else if($field->defaultvalue == "now()") {
-                    $var->default(NULL);
+                    $var->default(date('Y').'-01-01');
                 } else if($field->required) {
                     $var->default("1970-01-01");
                 } else {
@@ -900,6 +900,7 @@ class Module extends Model
                 $out[] = $obj;
             }
         }
+
         return $out;
     }
     
@@ -1037,6 +1038,49 @@ class Module extends Model
         } else {
             return $rules;
         }
+    }
+
+    /**
+     * Get list of rules
+     * @param $module_name
+     * @return array
+     */
+    public static function getRules($module_name){
+        $module = Module::get($module_name);
+        $rules = [];
+        if(isset($module)) {
+            $ftypes = ModuleFieldTypes::getFTypes2();
+            foreach($module->fields as $field) {
+                $col = "";
+                if($field['required']) {
+                    $col .= "required|";
+                }
+                if(in_array($ftypes[$field['field_type']], array("Currency", "Decimal"))) {
+                    // No min + max length
+                } else {
+                    if($field['minlength'] != 0) {
+                        $col .= "min:" . $field['minlength'] . "|";
+                    }
+                    if($field['maxlength'] != 0) {
+                        $col .= "max:" . $field['maxlength'] . "|";
+                    }
+                }
+                if($field['unique']) {
+                    $col .= "unique:" . $module->name_db . ",deleted_at,NULL";
+                }
+                // 'name' => 'required|unique|min:5|max:256',
+                // 'author' => 'required|max:50',
+                // 'price' => 'decimal',
+                // 'pages' => 'integer|max:5',
+                // 'genre' => 'max:500',
+                // 'description' => 'max:1000'
+                if($col != "") {
+                    $rules[$field['colname']] = trim($col, "|");
+                }
+            }
+        }
+
+        return $rules;
     }
     
     /**
