@@ -936,6 +936,33 @@ class Module extends Model
             return null;
         }
     }
+
+
+    public static function getFieldsList($module_name)
+    {
+        $fields2 = array();
+        $module = null;
+        if(is_int($module_name)) {
+            $module = Module::find($module_name);
+        } else {
+            $module = Module::where('name', $module_name)->orWhere('name_db', $module_name)->first();
+        }
+
+        // If Module is found in database also attach its field array to it.
+        if(isset($module)) {
+            $module = $module->toArray();
+            $fields = ModuleFields::where('module', $module['id'])->orderBy('sort', 'asc')->get()->toArray();
+
+            foreach($fields as $field) {
+                $fields2[] = $field['colname'];
+                //$fields2[$field['colname']] = $field;
+            }
+            //$module['fields'] = $fields2;
+            return $fields2;
+        } else {
+            return null;
+        }
+    }
     
     /**
      * Get Module by table name
