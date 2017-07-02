@@ -89,7 +89,12 @@ class LAFormMaker
                 $params['adminRoute'] = config('laraadmin.adminRoute');
                 if(isset($row)) {
                     $params['isEdit'] = true;
-                    $params['row_id'] = $row->id;
+                    if(isset($row[0])){
+                        $params['row_id'] = $row[0]->id;
+                    }
+                    else{
+                        $params['row_id'] = $row->id;
+                    }
                 } else {
                     $params['isEdit'] = false;
                     $params['row_id'] = 0;
