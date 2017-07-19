@@ -420,9 +420,18 @@ class LAHelper
         if($active) {
             $active_str = 'class="active"';
         }
+
+        if($menu->group == 'ADMIN'){
+            $str = '<li' . $treeview . ' ' . $active_str . '><a href="' . url(config("laraadmin.adminRoute") . '/' . $menu->url) . '"><i class="fa ' . $menu->icon . '"></i> <span>' . LAHelper::real_module_name($menu->name) . '</span> ' . $subviewSign . '</a>';
+        }
+        elseif ($menu->group == 'ISSUER'){
+            $str = '<li' . $treeview . ' ' . $active_str . '><a href="' . url(config("laraadmin.issuerRoute") . '/' . $menu->url) . '"><i class="fa ' . $menu->icon . '"></i> <span>' . LAHelper::real_module_name($menu->name) . '</span> ' . $subviewSign . '</a>';
+        }
+        elseif ($menu->group == 'INVESTOR'){
+            $str = '<li' . $treeview . ' ' . $active_str . '><a href="' . url(config("laraadmin.investorRoute") . '/' . $menu->url) . '"><i class="fa ' . $menu->icon . '"></i> <span>' . LAHelper::real_module_name($menu->name) . '</span> ' . $subviewSign . '</a>';
+        }
         
-        $str = '<li' . $treeview . ' ' . $active_str . '><a href="' . url(config("laraadmin.adminRoute") . '/' . $menu->url) . '"><i class="fa ' . $menu->icon . '"></i> <span>' . LAHelper::real_module_name($menu->name) . '</span> ' . $subviewSign . '</a>';
-        
+
         if(count($childrens)) {
             $str .= '<ul class="treeview-menu">';
             foreach($childrens as $children) {
@@ -464,15 +473,7 @@ class LAHelper
             $active_str = 'class="active"';
         }
         
-        if($menu->group == 'ADMIN'){
-            $str = '<li' . $treeview . ' ' . $active_str . '><a href="' . url(config("laraadmin.adminRoute") . '/' . $menu->url) . '"><i class="fa ' . $menu->icon . '"></i> <span>' . LAHelper::real_module_name($menu->name) . '</span> ' . $subviewSign . '</a>';
-        }
-        elseif ($menu->group == 'ISSUER'){
-            $str = '<li' . $treeview . ' ' . $active_str . '><a href="' . url(config("laraadmin.issuerRoute") . '/' . $menu->url) . '"><i class="fa ' . $menu->icon . '"></i> <span>' . LAHelper::real_module_name($menu->name) . '</span> ' . $subviewSign . '</a>';
-        }
-        elseif ($menu->group == 'INVESTOR'){
-            $str = '<li' . $treeview . ' ' . $active_str . '><a href="' . url(config("laraadmin.investorRoute") . '/' . $menu->url) . '"><i class="fa ' . $menu->icon . '"></i> <span>' . LAHelper::real_module_name($menu->name) . '</span> ' . $subviewSign . '</a>';
-        }
+        $str = '<li ' . $treeview . '' . $active_str . '><a ' . $treeview2 . ' href="' . url(config("laraadmin.adminRoute") . '/' . $menu->url) . '">' . LAHelper::real_module_name($menu->name) . $subviewSign . '</a>';
         
         if(count($childrens)) {
             $str .= '<ul class="dropdown-menu" role="menu">';

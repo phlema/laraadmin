@@ -291,9 +291,9 @@ class Module extends Model
                 break;
             case 'Currency':
                 if($update) {
-                    $var = $table->double($field->colname, 15, 2)->change();
+                    $var = $table->decimal($field->colname, 15,5)->change();
                 } else {
-                    $var = $table->double($field->colname, 15, 2);
+                    $var = $table->decimal($field->colname, 15,5);
                 }
                 if($field->defaultvalue != "") {
                     $var->default($field->defaultvalue);
@@ -999,11 +999,7 @@ class Module extends Model
             if($model_name == "User" || $model_name == "Role" || $model_name == "Permission") {
                 $model = "App\\" . ucfirst(str_singular($module_name));
             } else {
-                if (preg_match('/^[a-z]+_[a-z]+$/i', $module_name)) {
-				     $model = "App\\Models\\" . ucwords(str_singular($module_name),'_');
-                } else {
-                    $model = "App\\Models\\" . ucfirst(str_singular($module_name));
-                }  
+                $model = "App\\Models\\" . ucfirst(str_singular($module_name));
             }
             
             $result = $model::all();
@@ -1041,7 +1037,7 @@ class Module extends Model
                     if($field['required']) {
                         $col .= "required|";
                     }
-                    if(in_array($ftypes[$field['field_type']], array("Currency", "Decimal"))) {
+                    if(in_array($ftypes[$field['field_type']], array("Currency", "Decimal","Float"))) {
                         // No min + max length
                     } else {
                         if($field['minlength'] != 0) {
@@ -1086,7 +1082,7 @@ class Module extends Model
                 if($field['required']) {
                     $col .= "required|";
                 }
-                if(in_array($ftypes[$field['field_type']], array("Currency", "Decimal"))) {
+                if(in_array($ftypes[$field['field_type']], array("Currency", "Decimal","Float"))) {
                     // No min + max length
                 } else {
                     if($field['minlength'] != 0) {
