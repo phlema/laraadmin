@@ -464,9 +464,9 @@ class Module extends Model
                 break;
             case 'Float':
                 if($update) {
-                    $var = $table->float($field->colname)->change();
+                    $var = $table->decimal($field->colname, 15, 8)->change();
                 } else {
-                    $var = $table->float($field->colname);
+                    $var = $table->decimal($field->colname, 15, 8);
                 }
                 if($field->defaultvalue != "") {
                     $var->default($field->defaultvalue);
@@ -1129,7 +1129,11 @@ class Module extends Model
             if($model_name == "User" || $model_name == "Role" || $model_name == "Permission") {
                 $model = "App\\" . ucfirst(str_singular($module_name));
             } else {
-                $model = "App\\Models\\" . ucfirst(str_singular($module_name));
+               if (preg_match('/^[a-z]+_[a-z]+$/i', $module_name)) {
+				     $model = "App\\Models\\" . ucwords(str_singular($module_name),'_');
+                } else {
+                    $model = "App\\Models\\" . ucfirst(str_singular($module_name));
+                }
             }
             
             // Delete if unique rows available which are deleted
