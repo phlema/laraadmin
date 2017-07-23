@@ -408,7 +408,7 @@ class LAHelper
      */
     public static function print_menu($menu, $active = false)
     {
-        $childrens = \Dwij\Laraadmin\Models\Menu::where("parent", $menu->id)->orderBy('hierarchy', 'asc')->get();
+                $childrens = \Dwij\Laraadmin\Models\Menu::where("parent", $menu->id)->orderBy('hierarchy', 'asc')->get();
 
         $treeview = "";
         $subviewSign = "";
@@ -434,11 +434,18 @@ class LAHelper
 
         if(count($childrens)) {
             $str .= '<ul class="treeview-menu">';
+
             foreach($childrens as $children) {
-                $module = Module::get($children->url);
-                if(Module::hasAccess($module->id)) {
+                if($children->type == 'custom'){
                     $str .= LAHelper::print_menu($children);
                 }
+                else{
+                    $module = Module::get($children->url);
+                    if(Module::hasAccess($module->id)) {
+                        $str .= LAHelper::print_menu($children);
+                    }
+                }
+
             }
             $str .= '</ul>';
         }
