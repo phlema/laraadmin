@@ -791,6 +791,7 @@ class LAFormMaker
                     }
                     break;
                 case 'Currency':
+                        $value = currency_format($value);
 
                     break;
                 case 'Date':
