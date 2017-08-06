@@ -694,6 +694,7 @@ class LAFormMaker
                     }
                     // find view column name
                     $view_col = "";
+                    $has_custom = false;
                     // Check if atleast one record exists
                     if(isset($result[0])) {
                         $view_col_test_1 = "name";
@@ -704,7 +705,13 @@ class LAFormMaker
                         } else if(isset($result[0]->$view_col_test_2)) {
                             // Check whether view column name == "title"
                             $view_col = $view_col_test_2;
-                        } else {
+                        } 
+                        } else if(isset($result[0]->inv_first_name) && isset($result[0]->inv_last_name)) {
+                            // Check whether view column name == "title"
+                            $view_col = 'inv_first_name';
+                            $has_custom = true;
+                        } 
+                        else {
                             // retrieve the second column name which comes after "id"
                             $arr2 = $result[0]->toArray();
                             $arr2 = array_keys($arr2);
@@ -718,7 +725,13 @@ class LAFormMaker
                         if($view_col != "") {
                             // retrieve rows of table
                             foreach($result as $row) {
-                                $out[$row->id] = $row->$view_col;
+                                if($has_custom){
+                                    $out[$row->id] = $row->inv_first_name." ".$row->inv_last_name."(".$row->$view_col.")";
+                                }
+                                else{
+                                    $out[$row->id] = $row->$view_col;
+                                }
+                                
                             }
                         } else {
                             // Failed to find view column name
