@@ -706,7 +706,7 @@ class LAFormMaker
                             // Check whether view column name == "title"
                             $view_col = $view_col_test_2;
                         } 
-                        } else if(isset($result[0]->inv_first_name) && isset($result[0]->inv_last_name)) {
+                        else if(isset($result[0]->inv_first_name) && isset($result[0]->inv_last_name)) {
                             // Check whether view column name == "title"
                             $view_col = 'inv_first_name';
                             $has_custom = true;
@@ -739,7 +739,7 @@ class LAFormMaker
                     } else {
                         // Skipped efforts to detect view column name
                     }
-                } else if(Schema::hasTable($json)) {
+                }else if(Schema::hasTable($json)) {
                     // $array = \DB::table($table_name)->get();
                 }
             }
