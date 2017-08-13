@@ -298,7 +298,7 @@ class Module extends Model
                 if($field->defaultvalue != "") {
                     $var->default($field->defaultvalue);
                 } else if($field->required) {
-                    $var->default("0.0");
+                    $var->default("0.00000");
                 }
                 break;
             case 'Date':
@@ -340,14 +340,14 @@ class Module extends Model
             case 'Decimal':
                 $var = null;
                 if($update) {
-                    $var = $table->decimal($field->colname, 15, 3)->change();
+                    $var = $table->decimal($field->colname, 30, 8)->change();
                 } else {
-                    $var = $table->decimal($field->colname, 15, 3);
+                    $var = $table->decimal($field->colname, 30, 8);
                 }
                 if($field->defaultvalue != "") {
                     $var->default($field->defaultvalue);
                 } else if($field->required) {
-                    $var->default("0.0");
+                    $var->default("0.00000000");
                 }
                 break;
             case 'Dropdown':
@@ -471,7 +471,7 @@ class Module extends Model
                 if($field->defaultvalue != "") {
                     $var->default($field->defaultvalue);
                 } else if($field->required) {
-                    $var->default("0.0");
+                    $var->default("0.00000000");
                 }
                 break;
             case 'HTML':
@@ -562,15 +562,15 @@ class Module extends Model
                 $var = null;
                 if($field->maxlength == 0) {
                     if($update) {
-                        $var = $table->string($field->colname)->change();
+                        $var = $table->string($field->colname)->nullable()->change();
                     } else {
-                        $var = $table->string($field->colname);
+                        $var = $table->string($field->colname)->nullable();
                     }
                 } else {
                     if($update) {
-                        $var = $table->string($field->colname, $field->maxlength)->change();
+                        $var = $table->string($field->colname, $field->maxlength)->nullable()->change();
                     } else {
-                        $var = $table->string($field->colname, $field->maxlength);
+                        $var = $table->string($field->colname, $field->maxlength)->nullable();
                     }
                 }
                 if($field->defaultvalue != "") {
@@ -702,9 +702,9 @@ class Module extends Model
                 $var = null;
                 if($field->maxlength == 0) {
                     if($update) {
-                        $var = $table->text($field->colname)->change();
+                        $var = $table->text($field->colname)->nullable()->change();
                     } else {
-                        $var = $table->text($field->colname);
+                        $var = $table->text($field->colname)->nullable();
                     }
                 } else {
                     if($update) {
