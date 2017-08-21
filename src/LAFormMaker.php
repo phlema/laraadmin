@@ -166,8 +166,8 @@ class LAFormMaker
                     unset($params['min']);
 
                     $params['data-rule-currency'] = "true";
-                    $params['min'] = "0";
-                    $out .= Form::number($field_name, $default_val, $params);
+                    //$params['min'] = "0";
+                    $out .= Form::text($field_name, $default_val, $params);
                     break;
                 case 'Date':
                     $out .= '<label for="' . $field_name . '">' . $label . $required_ast . ' :</label>';
@@ -402,10 +402,12 @@ class LAFormMaker
                     }
 
                     unset($params['data-rule-minlength']);
+                    unset($params['data-rule-maxlength']);
+
                     unset($params['max']);
                     unset($params['min']);
 
-                    $out .= Form::number($field_name, $default_val, $params);
+                    $out .= Form::text($field_name, $default_val, $params);
                     break;
                 case 'HTML':
                     $out .= '<label for="' . $field_name . '">' . $label . $required_ast . ' :</label>';

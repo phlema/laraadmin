@@ -1088,6 +1088,7 @@ class Module extends Model
                 }
                 if(in_array($ftypes[$field['field_type']], array("Currency", "Decimal","Float"))) {
                     // No min + max length
+                    $col .= "numeric|";
                 } else {
                     if($field['minlength'] != 0) {
                         $col .= "min:" . $field['minlength'] . "|";
@@ -1112,6 +1113,26 @@ class Module extends Model
         }
 
         return $rules;
+    }
+
+    public static function get_fillable_rules(){
+        $module = Module::all();
+        if(!empty($module)){
+            $output = [];
+            foreach($module as $mod){
+               $module_name     = $mod->name ;
+               $module_fillable = Module::getFieldsList($module_name);
+               $module_rules    = Module::getRules($module_name);
+
+               $output[$module_name]['fillable'] = $module_fillable;
+               $output[$module_name]['rules']    = $module_rules;
+                //$output
+            }
+        }
+        //dd($output);
+        return $output;
+        //dump($output);
+        //dd($module);
     }
     
     /**

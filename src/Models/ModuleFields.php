@@ -44,6 +44,7 @@ class ModuleFields extends Model
      */
     public static function createField($request)
     {
+
         $module = Module::find($request->module_id);
         $module_id = $request->module_id;
         
@@ -69,7 +70,7 @@ class ModuleFields extends Model
                 } else if(in_array($request->field_type, [14])) {
                     $request->maxlength = 20;
                 } else if(in_array($request->field_type, [3, 6, 10, 13])) {
-                    $request->maxlength = 11;
+                    $request->maxlength = 0;
                 }
             }
             $field->minlength = $request->minlength;
@@ -130,7 +131,15 @@ class ModuleFields extends Model
         // field_type conversion to integer
         if(is_string($field->field_type)) {
             $ftypes = ModuleFieldTypes::getFTypes();
-            $field->field_type = $ftypes[$field->field_type];
+
+            if(isset($ftypes[$field->field_type])){
+                $field->field_type = $ftypes[$field->field_type];
+            }
+            else{
+                $ftypes2 = array_flip($ftypes);
+                if(isset($ftypes2[$field->field_type]))  $field->field_type = $ftypes2[$field->field_type];
+                $field->field_type = $ftypes[$field->field_type];
+            }
         }
 
         $field->save();
@@ -185,7 +194,7 @@ class ModuleFields extends Model
             } else if(in_array($request->field_type, [14])) {
                 $request->maxlength = 20;
             } else if(in_array($request->field_type, [3, 6, 10, 13])) {
-                $request->maxlength = 11;
+                $request->maxlength = 0;
             }
         }
         $field->minlength = $request->minlength;
