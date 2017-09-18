@@ -1077,6 +1077,10 @@ class Module extends Model
      * @return array
      */
     public static function getRules($module_name){
+        if (!DB::connection()->getDatabaseName())
+        {
+            return [];
+        }
         $module = Module::get($module_name);
         $rules = [];
         if(isset($module)) {
@@ -1116,6 +1120,7 @@ class Module extends Model
     }
 
     public static function get_fillable_rules(){
+        //return [];
         $module = Module::all();
         if(!empty($module)){
             $output = [];

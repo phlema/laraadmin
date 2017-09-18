@@ -86,7 +86,7 @@ class LAFormMaker
             if($unique && !isset($params['unique'])) {
                 $params['data-rule-unique'] = "true";
                 $params['field_id'] = $module->fields[$field_name]['id'];
-                $params['adminRoute'] = config('laraadmin.adminRoute');
+                $params['adminRoute'] = (\Auth::user())? config(\Auth::user()->get_user_path()) :config('laraadmin.adminRoute');
                 if(isset($row)) {
                     $params['isEdit'] = true;
                     if(isset($row[0])){
