@@ -251,7 +251,7 @@ class Module extends Model
         switch($field->field_type) {
             case 'Address':
                 $var = null;
-                if($field->maxlength == 0) {
+                if($field->maxlength === 0) {
                     if($update) {
                         $var = $table->text($field->colname)->change();
                     } else {
@@ -417,7 +417,7 @@ class Module extends Model
                 break;
             case 'Email':
                 $var = null;
-                if($field->maxlength == 0) {
+                if($field->maxlength === 0) {
                     if($update) {
                         $var = $table->string($field->colname, 100)->nullable()->change();
                     } else {
@@ -515,7 +515,7 @@ class Module extends Model
                 break;
             case 'Mobile':
                 $var = null;
-                if($field->maxlength == 0) {
+                if($field->maxlength === 0) {
                     if($update) {
                         $var = $table->string($field->colname)->nullable()->change();
                     } else {
@@ -560,7 +560,7 @@ class Module extends Model
                 break;
             case 'Name':
                 $var = null;
-                if($field->maxlength == 0) {
+                if($field->maxlength === 0) {
                     if($update) {
                         $var = $table->string($field->colname)->nullable()->change();
                     } else {
@@ -581,7 +581,7 @@ class Module extends Model
                 break;
             case 'Password':
                 $var = null;
-                if($field->maxlength == 0) {
+                if($field->maxlength === 0) {
                     if($update) {
                         $var = $table->string($field->colname)->nullable()->change();
                     } else {
@@ -656,7 +656,7 @@ class Module extends Model
                 break;
             case 'String':
                 $var = null;
-                if($field->maxlength == 0) {
+                if($field->maxlength === 0) {
                     if($update) {
                         $var = $table->string($field->colname)->nullable()->change();
                     } else {
@@ -700,7 +700,7 @@ class Module extends Model
                 break;
             case 'Textarea':
                 $var = null;
-                if($field->maxlength == 0) {
+                if($field->maxlength === 0) {
                     if($update) {
                         $var = $table->text($field->colname)->nullable()->change();
                     } else {
@@ -721,7 +721,7 @@ class Module extends Model
                 break;
             case 'TextField':
                 $var = null;
-                if($field->maxlength == 0) {
+                if($field->maxlength === 0) {
                     if($update) {
                         $var = $table->string($field->colname)->nullable()->change();
                     } else {
@@ -742,7 +742,7 @@ class Module extends Model
                 break;
             case 'URL':
                 $var = null;
-                if($field->maxlength == 0) {
+                if($field->maxlength === 0) {
                     if($update) {
                         $var = $table->string($field->colname)->nullable()->change();
                     } else {

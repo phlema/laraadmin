@@ -279,7 +279,7 @@ class LAFormMaker
                     }
 
                     // Bug here - NULL value Item still shows Not null in Form
-                    if($default_val == NULL) {
+                    if($default_val == NULL || $default_val == '') {
                         $params['disabled'] = "";
                     }
 
